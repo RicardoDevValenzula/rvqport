@@ -1,0 +1,77 @@
+---
+import '../../styles/fragment.css';
+
+// Illustrative data. Department counts add up to the weekly total.
+const departments = [
+  { name: 'Marketing', leads: 64 },
+  { name: 'Collections', leads: 41 },
+  { name: 'Management', leads: 23 },
+];
+const total = departments.reduce((sum, d) => sum + d.leads, 0);
+
+const leads = [
+  { name: 'Daniela Ochoa', source: 'Meta Lead Ads', dept: 'Marketing', stage: 'New' },
+  { name: 'Luis Ibarra', source: 'Meta Lead Ads', dept: 'Marketing', stage: 'Contacted' },
+  { name: 'Karla Peña', source: 'Referral', dept: 'Management', stage: 'Enrolled' },
+  { name: 'Óscar Félix', source: 'WhatsApp', dept: 'Collections', stage: 'Payment plan' },
+  { name: 'Sofía Duarte', source: 'Meta Lead Ads', dept: 'Marketing', stage: 'Contacted' },
+];
+---
+
+<div data-ui class="crm" role="img" aria-label={`TNU CRM leads screen: ${total} leads this week across marketing, collections and management`}>
+  <div class="ui-bar">
+    <span class="ui-title">Leads · this week</span>
+    <span class="ui-muted">{total} total</span>
+  </div>
+  <div class="crm__depts">
+    {
+      departments.map((d) => (
+        <div>
+          <span class="ui-muted">{d.name}</span>
+          <strong>{d.leads}</strong>
+        </div>
+      ))
+    }
+  </div>
+  <table>
+    <thead>
+      <tr><th>Lead</th><th class="ui-hide-sm">Source</th><th>Department</th><th>Stage</th></tr>
+    </thead>
+    <tbody>
+      {
+        leads.map((l) => (
+          <tr>
+            <td>{l.name}</td>
+            <td class="ui-hide-sm ui-muted">{l.source}</td>
+            <td>{l.dept}</td>
+            <td>
+              <span class:list={['ui-pill', { 'ui-pill--ok': l.stage === 'Enrolled', 'ui-pill--due': l.stage === 'New' }]}>
+                {l.stage}
+              </span>
+            </td>
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+</div>
+
+<style>
+  .crm__depts {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    padding: 20px 16px;
+  }
+
+  .crm__depts div {
+    display: grid;
+    gap: 4px;
+  }
+
+  .crm__depts strong {
+    font-size: clamp(18px, 2vw, 28px);
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+  }
+</style>

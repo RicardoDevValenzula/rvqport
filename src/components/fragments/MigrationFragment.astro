@@ -1,0 +1,20 @@
+---
+import '../../styles/fragment.css';
+---
+
+<div data-ui class="term" role="img" aria-label="Terminal: the project file moves from .NET Framework 4.8 to .NET 10, the release build succeeds, and 8 refactored endpoints run about 50% faster">
+  <div class="ui-bar">
+    <span class="ui-title">api — zsh</span>
+    <span class="ui-muted">.NET Framework → .NET 10</span>
+  </div>
+  <pre translate="no"><span class="t-prompt">$</span> git diff Api.csproj
+<span class="t-del">-  &lt;TargetFrameworkVersion&gt;v4.8&lt;/TargetFrameworkVersion&gt;</span>
+<span class="t-add">+  &lt;TargetFramework&gt;net10.0&lt;/TargetFramework&gt;</span>
+
+<span class="t-prompt">$</span> dotnet build -c Release
+<span class="t-ok">Build succeeded.</span>
+
+<span class="t-dim"># refactored endpoints</span>
+<span class="t-dim">count     </span>8
+<span class="t-dim">speed-up  </span><span class="t-ok">~50%</span></pre>
+</div>

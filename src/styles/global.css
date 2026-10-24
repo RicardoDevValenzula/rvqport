@@ -1,0 +1,219 @@
+:root {
+  /* Colour: dealt palette "Plum-black and pink" */
+  --bg: #0d060b;
+  --surface: #1b0e17;
+  --ink: #ffffff;
+  --muted: #a99ea6;
+  --accent: #ff488b;
+  --accent-strong: #ff6fa3;
+  --accent-ink: #0d060b;
+  --field-1: #470c35;
+  --field-1-ink: #ffffff;
+  --field-1-muted: #e3bcd6;
+  --field-2: #ffffff;
+  --field-2-ink: #101421;
+  --field-2-muted: #535868;
+
+  /* Type: Unbounded (display) / Onest (text); five steps on the page */
+  --font-display: 'Unbounded', system-ui, sans-serif;
+  --font-text: 'Onest', system-ui, sans-serif;
+  --font-code: ui-monospace, 'SF Mono', 'Cascadia Code', Menlo, monospace; /* taste-skill-ignore: literal code and terminals only */
+  --step-name: clamp(2.5rem, 9vw, 8.75rem);
+  --step-head: clamp(2rem, 1.3rem + 3.2vw, 4rem);
+  --step-lead: clamp(1.25rem, 1.1rem + 0.7vw, 1.625rem);
+  --step-body: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
+  --step-small: clamp(0.8125rem, 0.79rem + 0.1vw, 0.875rem);
+
+  /* Space */
+  --edge: max(24px, env(safe-area-inset-left), env(safe-area-inset-right));
+  --gutter: 24px;
+  --section-gap: clamp(120px, 14vw, 200px);
+
+  /* Motion: UI curve from emil-design-eng, long reveals from taste-skill */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-soft: cubic-bezier(0.33, 1, 0.68, 1);
+  --t-press: 140ms;
+  --t-hover: 180ms;
+  --t-reveal: 800ms;
+  --stagger: 80ms;
+}
+
+@media (max-width: 720px) {
+  :root {
+    --edge: max(16px, env(safe-area-inset-left), env(safe-area-inset-right));
+    --gutter: 16px;
+    --step-name: 10.4vw;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  color-scheme: dark;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-text);
+  font-size: var(--step-body);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+}
+
+a,
+button,
+input {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+
+p,
+dd,
+li {
+  text-wrap: pretty;
+}
+
+input,
+button {
+  font: inherit;
+  color: inherit;
+}
+
+pre,
+code {
+  font-family: var(--font-code);
+}
+
+:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.skip-link {
+  position: absolute;
+  left: var(--edge);
+  top: -100px;
+  z-index: 10;
+  padding: 12px 16px;
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+.skip-link:focus {
+  top: var(--edge);
+}
+
+/* Text links: underline appears on hover only where hover exists */
+.link {
+  text-decoration: underline;
+  text-decoration-thickness: 0.07em;
+  text-underline-offset: 0.2em;
+  text-decoration-color: color-mix(in srgb, currentColor 35%, transparent);
+  transition: text-decoration-color var(--t-hover) ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .link:hover {
+    text-decoration-color: currentColor;
+  }
+}
+
+/* The one button shape on the page: square corners, flat accent fill */
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
+  min-height: 48px;
+  padding: 0 22px;
+  border: 0;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    transform var(--t-press) var(--ease-out),
+    background-color var(--t-hover) ease;
+}
+
+.button:active {
+  transform: scale(0.97);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .button:hover {
+    background: var(--accent-strong);
+  }
+}
+
+/* Entrances: only once, only with JS, never in reduced motion */
+@media (prefers-reduced-motion: no-preference) {
+  .js [data-reveal] {
+    opacity: 0;
+    transform: translateY(24px);
+    transition:
+      opacity 700ms var(--ease-out),
+      transform var(--t-reveal) var(--ease-expo);
+    transition-delay: calc(var(--i, 0) * var(--stagger));
+  }
+
+  .js [data-reveal].is-in {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* One treatment for every photograph: a black and pink duotone.
+   Grayscale image multiplied over the accent: highlights go pink, shadows stay ink-black. */
+.duotone {
+  background: var(--accent);
+  overflow: hidden;
+}
+
+.duotone img {
+  filter: grayscale(1) contrast(1.15) brightness(1.05);
+  mix-blend-mode: multiply;
+}

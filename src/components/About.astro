@@ -1,0 +1,158 @@
+---
+import { about, facts, toolbox } from '../data/profile';
+---
+
+<section id="about" class="about" aria-labelledby="about-title">
+  <div class="about__row">
+    <dl class="facts">
+      {
+        facts.map((fact, i) => (
+          <div data-reveal style={`--i: ${i}`}>
+            <dt>{fact.label}</dt>
+            <dd>{fact.value}</dd>
+          </div>
+        ))
+      }
+    </dl>
+    <div class="about__text" data-reveal>
+      <h2 id="about-title">About.</h2>{' '}
+      <p>{about}</p>
+    </div>
+  </div>
+
+  <div class="about__row about__row--record">
+    {
+      toolbox.map((group, i) => (
+        <div class="record" data-reveal style={`--i: ${i}`}>
+          <h3>{group.title}</h3>
+          <ul>
+            {group.items.map((tool) => (
+              <li>
+                <span translate="no">{tool.name}</span>
+                <span class="record__kind">{tool.detail}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .about {
+    /* The photo band below shares this white ground, so the bottom gap stays short */
+    padding: var(--section-gap) var(--edge) clamp(72px, 8vw, 120px);
+    background: var(--field-2);
+    color: var(--field-2-ink);
+  }
+
+  .about__row {
+    display: grid;
+    grid-template-columns: 34% minmax(0, 56%);
+    column-gap: 0;
+  }
+
+  .about__row--record {
+    margin-top: 120px;
+    grid-template-columns: 34% repeat(3, minmax(0, 1fr));
+    column-gap: 48px;
+  }
+
+  .about__row--record .record:first-child {
+    grid-column: 2;
+  }
+
+  .facts {
+    display: grid;
+    gap: 20px;
+    align-content: start;
+    max-width: 200px;
+    font-size: var(--step-small);
+  }
+
+  .facts dt {
+    color: var(--field-2-muted);
+  }
+
+  .about__text {
+    font-size: var(--step-lead);
+    line-height: 1.35;
+  }
+
+  .about__text h2,
+  .about__text p {
+    display: inline;
+    font: inherit;
+  }
+
+  .about__text h2 {
+    font-weight: 500;
+  }
+
+  .record h3 {
+    font-size: var(--step-small);
+    font-weight: 500;
+    margin-bottom: 14px;
+  }
+
+  .record ul {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: 10px;
+    font-size: var(--step-small);
+  }
+
+  .record li {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .record__kind {
+    color: var(--field-2-muted);
+  }
+
+  @media (max-width: 900px) {
+    .about__row,
+    .about__row--record {
+      grid-template-columns: 1fr 1fr;
+      column-gap: var(--gutter);
+      row-gap: 40px;
+    }
+
+    .about__row--record .record:first-child {
+      grid-column: auto;
+    }
+
+    .about__text {
+      grid-column: 1 / -1;
+      grid-row: 1;
+      font-size: var(--step-lead);
+    }
+
+    .facts {
+      grid-column: 1 / -1;
+      grid-template-columns: 1fr 1fr;
+      max-width: none;
+      font-size: var(--step-small);
+    }
+
+    .about__row--record {
+      margin-top: 64px;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .about__row--record {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 640px) {
+    .about__row--record {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

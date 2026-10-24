@@ -1,0 +1,80 @@
+---
+import '../../styles/fragment.css';
+
+// Illustrative conversation: a balance of $4,800 split into 3 payments of $1,600.
+const messages = [
+  { from: 'customer', text: 'Hola, quiero ponerme al corriente con mi colegiatura, pero este mes no me alcanza.' },
+  { from: 'agent', text: 'Entiendo, Andrea. Tu saldo es de $4,800. Puedo ofrecerte 3 pagos de $1,600 sin recargo. ¿Te funciona?' },
+  { from: 'customer', text: 'Sí, me funciona.' },
+  { from: 'agent', text: 'Listo. Te envío el enlace del primer pago de $1,600, con vencimiento el 30 de octubre.' },
+];
+---
+
+<div data-ui class="chat" role="img" aria-label="Negotiachat on WhatsApp: the AI agent offers a student three payments of $1,600 for a $4,800 balance, and she accepts">
+  <div class="ui-bar">
+    <span class="ui-title">Andrea R. · WhatsApp</span>
+    <span class="ui-pill ui-pill--ok">Agreement reached</span>
+  </div>
+  <div class="chat__body">
+    <div class="chat__thread">
+      {messages.map((m) => <p class:list={['bubble', `bubble--${m.from}`]}>{m.text}</p>)}
+    </div>
+    <dl class="chat__side ui-hide-sm">
+      <dt class="ui-muted">Handled by</dt>
+      <dd>AI agent, human on call</dd>
+      <dt class="ui-muted">Balance</dt>
+      <dd>$4,800</dd>
+      <dt class="ui-muted">Plan</dt>
+      <dd>3 × $1,600</dd>
+      <dt class="ui-muted">First due</dt>
+      <dd>Oct 30</dd>
+    </dl>
+  </div>
+</div>
+
+<style>
+  .chat__body {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 180px;
+  }
+
+  .chat__thread {
+    display: grid;
+    gap: 10px;
+    align-content: start;
+    padding: 16px;
+  }
+
+  .bubble {
+    max-width: 80%;
+    padding: 10px 12px;
+    background: var(--ui-panel);
+  }
+
+  .bubble--agent {
+    justify-self: end;
+    background: color-mix(in srgb, var(--ui-accent) 20%, var(--ui-bg));
+  }
+
+  .chat__side {
+    display: grid;
+    gap: 2px 0;
+    align-content: start;
+    padding: 16px;
+    border-left: 1px solid var(--ui-line); /* taste-skill-ignore: product UI (data-ui) */
+  }
+
+  .chat__side dd {
+    margin-bottom: 10px;
+  }
+
+  @media (max-width: 720px) {
+    .chat__body {
+      grid-template-columns: 1fr;
+    }
+
+    .bubble {
+      max-width: 90%;
+    }
+  }
+</style>

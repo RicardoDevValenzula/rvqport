@@ -1,0 +1,149 @@
+---
+import { profile, mailto } from '../data/profile';
+
+const rows = [
+  { label: 'Email', href: mailto, detail: profile.email },
+  { label: 'GitHub', href: profile.links.github.href, detail: profile.links.github.handle },
+  { label: 'LinkedIn', href: profile.links.linkedin.href, detail: profile.links.linkedin.handle },
+];
+---
+
+<section id="contact" class="contact" aria-labelledby="contact-title">
+  <div class="contact__row">
+    <h2 id="contact-title" data-reveal>Let’s build it</h2>
+  </div>
+  {
+    rows.map((row, i) => (
+      <div class="contact__row">
+        <a class="contact__link" href={row.href} data-reveal style={`--i: ${i}`}>
+          <span>{row.label}</span>
+          <span class="contact__detail">{row.detail}</span>
+        </a>
+      </div>
+    ))
+  }
+  <div class="contact__row contact__row--greet">
+    <p data-reveal>Hola</p>
+    <a class="contact__go" href={mailto} aria-label={`Email ${profile.firstName}`} data-reveal style="--i: 1">
+      <span aria-hidden="true">→</span>
+    </a>
+  </div>
+</section>
+
+<style>
+  .contact {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: var(--step-head);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+  }
+
+  .contact__row {
+    display: flex;
+    align-items: flex-end;
+    min-height: clamp(96px, 10vw, 150px);
+    padding: 0 var(--edge) 24px;
+  }
+
+  .contact__row:nth-child(even) {
+    background: var(--surface);
+  }
+
+  .contact h2,
+  .contact p {
+    font: inherit;
+  }
+
+  .contact__link {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 24px;
+    width: 100%;
+    text-decoration: none;
+    transition: color var(--t-hover) ease;
+  }
+
+  .contact__detail {
+    font-family: var(--font-text);
+    font-weight: 400;
+    font-size: var(--step-body);
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--muted);
+    overflow-wrap: anywhere;
+    text-align: right;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .contact__link:hover {
+      color: var(--accent);
+    }
+  }
+
+  .contact__row--greet {
+    align-items: center;
+    gap: 24px;
+  }
+
+  .contact__go {
+    display: grid;
+    place-items: center;
+    width: 0.9em;
+    height: 0.9em;
+    min-width: 56px;
+    min-height: 56px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--accent-ink);
+    font-family: var(--font-text);
+    font-size: 0.6em;
+    text-decoration: none;
+    transition:
+      transform var(--t-press) var(--ease-out),
+      background-color var(--t-hover) ease;
+  }
+
+  .contact__go:active {
+    transform: scale(0.95);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .contact__go:hover {
+      background: var(--accent-strong);
+    }
+  }
+
+  @media (max-width: 720px) {
+    .contact__row {
+      min-height: 84px;
+      padding: 0 var(--edge) 16px;
+    }
+
+    .contact__link {
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .contact__detail {
+      font-size: var(--step-small);
+      text-align: left;
+    }
+
+    .contact__row--greet {
+      justify-content: space-between;
+      background: var(--accent);
+      color: var(--accent-ink);
+      padding-top: 16px;
+    }
+
+    .contact__go {
+      background: var(--accent-ink);
+      color: var(--accent);
+    }
+  }
+</style>

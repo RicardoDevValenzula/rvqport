@@ -1,0 +1,20 @@
+---
+import '../../styles/fragment.css';
+---
+
+<div data-ui class="term" role="img" aria-label="SQL console: the same report query takes 4 minutes before the redesign and 10 seconds after adding an index and rewriting it">
+  <div class="ui-bar">
+    <span class="ui-title">reports — sql</span>
+    <span class="ui-muted">query redesign</span>
+  </div>
+  <pre translate="no"><span class="t-dim">-- before</span>
+<span class="t-prompt">&gt;</span> SELECT … FROM records r JOIN accounts a ON …;
+<span class="t-del">Time: 240000 ms (4 min)</span>
+
+<span class="t-prompt">&gt;</span> CREATE INDEX idx_records_account_date
+    ON records (account_id, created_at);
+
+<span class="t-dim">-- after: index + rewritten joins</span>
+<span class="t-prompt">&gt;</span> SELECT … FROM records r JOIN accounts a ON …;
+<span class="t-ok">Time: 10000 ms (10 s)</span></pre>
+</div>

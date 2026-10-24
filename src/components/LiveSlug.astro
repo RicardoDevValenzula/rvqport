@@ -1,0 +1,206 @@
+---
+import { toSlug } from '../lib/slug';
+import source from '../lib/slug.ts?raw';
+
+// Server-rendered first state, so the stage reads correctly without JavaScript.
+const sample = 'TNU CRM Leads';
+const first = toSlug(sample);
+const slug = first.ok ? first.slug : '';
+---
+
+<div class="live">
+  <div class="live__copy">
+    <h2 class="live__title" data-reveal>One language</h2>
+    <p class="live__lead" data-reveal style="--i: 1">
+      End to end. Type a project name: the same TypeScript function shapes it in the browser and answers for the
+      server, so both sides always agree.
+    </p>
+    <label class="live__field" data-reveal style="--i: 2">
+      <span class="live__label">Project name</span>
+      <input id="live-input" name="project-name" type="text" value={sample} maxlength="60" autocomplete="off" spellcheck="false" />
+    </label>
+  </div>
+
+  <div class="live__panes" aria-live="polite">
+    <section class="pane" aria-label="In the browser" data-reveal style="--i: 1">
+      <p class="pane__where">In the browser, React</p>
+      <p class="pane__value" data-out="client">/projects/{slug}</p>
+      <p class="pane__note" data-out="client-note">Ready to save</p>
+    </section>
+    <section class="pane" aria-label="On the server" data-reveal style="--i: 2">
+      <p class="pane__where">On the server, Node.js</p>
+      <p class="pane__value" data-out="server">201 Created</p>
+      <p class="pane__note" data-out="server-note">{`{ "slug": "${slug}" }`}</p>
+    </section>
+    <figure class="code" data-reveal style="--i: 3">
+      <figcaption>src/lib/slug.ts, imported by both</figcaption>
+      <pre translate="no"><code>{source.trim()}</code></pre>
+    </figure>
+  </div>
+</div>
+
+<script>
+  import { toSlug } from '../lib/slug';
+
+  const input = document.querySelector<HTMLInputElement>('#live-input');
+  const out = (key: string) => document.querySelector<HTMLElement>(`[data-out="${key}"]`);
+
+  function render(value: string) {
+    const result = toSlug(value);
+    const client = out('client');
+    const clientNote = out('client-note');
+    const server = out('server');
+    const serverNote = out('server-note');
+    if (!client || !clientNote || !server || !serverNote) return;
+
+    if (result.ok) {
+      client.textContent = `/projects/${result.slug}`;
+      clientNote.textContent = 'Ready to save';
+      server.textContent = '201 Created';
+      serverNote.textContent = `{ "slug": "${result.slug}" }`;
+    } else {
+      client.textContent = result.error;
+      clientNote.textContent = 'Save is disabled';
+      server.textContent = '422 Unprocessable';
+      serverNote.textContent = `{ "error": "${result.error}" }`;
+    }
+    client.closest('.pane')?.toggleAttribute('data-error', !result.ok);
+    server.closest('.pane')?.toggleAttribute('data-error', !result.ok);
+  }
+
+  input?.addEventListener('input', () => render(input.value));
+</script>
+
+<style>
+  .live {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--gutter);
+    align-content: center;
+    height: 100%;
+    padding: clamp(24px, 3vw, 48px);
+    background: var(--field-1);
+    color: var(--field-1-ink);
+  }
+
+  .live__copy {
+    grid-column: 1 / span 5;
+    align-self: center;
+  }
+
+  .live__title {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: var(--step-head);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    max-width: 12ch;
+  }
+
+  .live__lead {
+    margin-top: 32px;
+    max-width: 38ch;
+  }
+
+  .live__field {
+    display: grid;
+    gap: 8px;
+    margin-top: 32px;
+    max-width: 420px;
+  }
+
+  .live__label {
+    font-size: var(--step-small);
+    color: var(--field-1-muted);
+  }
+
+  .live__field input {
+    min-height: 56px;
+    padding: 0 16px;
+    border: 2px solid var(--field-1-ink);
+    border-radius: 0;
+    background: var(--bg);
+    font-size: var(--step-lead);
+  }
+
+  .live__panes {
+    grid-column: 7 / -1;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--gutter);
+    align-self: center;
+    min-width: 0;
+  }
+
+  .pane {
+    padding: 20px;
+    background: var(--bg);
+    min-width: 0;
+  }
+
+  .pane__where,
+  .pane__note {
+    font-size: var(--step-small);
+    color: var(--muted);
+  }
+
+  .pane__note {
+    overflow-wrap: anywhere;
+  }
+
+  .pane__value {
+    margin-block: 10px 6px;
+    font-size: var(--step-lead);
+    font-weight: 500;
+    line-height: 1.25;
+    overflow-wrap: anywhere;
+  }
+
+  .pane[data-error] .pane__value {
+    color: var(--accent);
+  }
+
+  .code {
+    grid-column: 1 / -1;
+    padding: 20px;
+    background: var(--surface);
+    min-width: 0;
+  }
+
+  .code figcaption {
+    font-size: var(--step-small);
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+
+  .code pre {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    font-size: 13px;
+    line-height: 1.55;
+  }
+
+  @media (max-width: 900px) {
+    .live {
+      grid-template-columns: 1fr;
+      align-content: start;
+      height: auto;
+      padding: 20px;
+    }
+
+    .live__copy,
+    .live__panes {
+      grid-column: 1;
+    }
+
+    .live__lead,
+    .live__field {
+      margin-top: 20px;
+    }
+
+    .code {
+      display: none;
+    }
+  }
+</style>

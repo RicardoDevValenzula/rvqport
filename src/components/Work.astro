@@ -1,0 +1,222 @@
+---
+import { Image } from 'astro:assets';
+import terminal from '../assets/photos/robotron-terminal.jpg';
+import { projects } from '../data/projects';
+import ChatFragment from './fragments/ChatFragment.astro';
+import CrmFragment from './fragments/CrmFragment.astro';
+import MigrationFragment from './fragments/MigrationFragment.astro';
+import QueryFragment from './fragments/QueryFragment.astro';
+
+const fragments = {
+  chat: ChatFragment,
+  crm: CrmFragment,
+  migration: MigrationFragment,
+  query: QueryFragment,
+};
+---
+
+<section id="work" class="work" aria-labelledby="work-title">
+  <div class="work__head">
+    <div class="work__statement" data-reveal>
+      <h2 id="work-title">Selected work:</h2>{' '}
+      <p>
+        {
+          projects.map((project, i) => (
+            <>
+              <a class="work__name" href={`#${project.id}`} translate="no">{project.name}</a>
+              {i < projects.length - 2 ? ', ' : i === projects.length - 2 ? ' and ' : '. '}
+            </>
+          ))
+        }
+        Systems that people use every day.
+      </p>
+    </div>
+    <div class="work__photo duotone" data-reveal style="--i: 1">
+      <Image
+        src={terminal}
+        alt="A Robotron K 8912 computer terminal from the early 1980s, its screen dark above a keyboard"
+        widths={[600, 1000]}
+        sizes="(max-width: 900px) 100vw, 40vw"
+      />
+    </div>
+  </div>
+
+  <div class="projects">
+    {
+      projects.map((project, i) => {
+        const Fragment = fragments[project.fragment];
+        return (
+          <article id={project.id} class={`project project--${i % 2 === 0 ? 'left' : 'right'}`}>
+            <div class="project__shot" data-reveal>
+              <Fragment />
+            </div>
+            <div class="project__text">
+              <h3 data-reveal translate="no">{project.name}</h3>
+              <p class="project__context" data-reveal style="--i: 1">{project.context}</p>
+              <p data-reveal style="--i: 1">{project.summary}</p>
+              <p class="project__result" data-reveal style="--i: 2">{project.result}</p>
+              <dl data-reveal style="--i: 3">
+                <dt>Stack</dt>
+                <dd>{project.stack}</dd>
+              </dl>
+            </div>
+          </article>
+        );
+      })
+    }
+  </div>
+</section>
+
+<style>
+  .work {
+    padding: 0 var(--edge) var(--section-gap);
+    background: var(--field-2);
+    color: var(--field-2-ink);
+  }
+
+  .work__head {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--gutter);
+    align-items: start;
+  }
+
+  .work__photo {
+    grid-column: 8 / -1;
+    aspect-ratio: 4 / 3;
+  }
+
+  .work__photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .work__statement {
+    grid-column: 1 / span 6;
+    max-width: 44ch;
+    font-size: var(--step-lead);
+    line-height: 1.2;
+    font-weight: 500;
+  }
+
+  .work__statement h2,
+  .work__statement p {
+    display: inline;
+    font: inherit;
+  }
+
+  .work__statement p {
+    color: var(--field-2-muted);
+  }
+
+  .work__name {
+    color: var(--field-2-ink);
+    text-decoration: none;
+    transition: color var(--t-hover) ease;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .work__statement:has(.work__name:hover) .work__name:not(:hover) {
+      color: var(--field-2-muted);
+    }
+  }
+
+  .projects {
+    display: grid;
+    gap: clamp(96px, 10vw, 160px);
+    margin-top: var(--section-gap);
+  }
+
+  .project__shot,
+  .project__text {
+    min-width: 0;
+  }
+
+  .project {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--gutter);
+    align-items: end;
+  }
+
+  .project--left .project__shot {
+    grid-column: 1 / span 8;
+  }
+
+  .project--left .project__text {
+    grid-column: 9 / -1;
+  }
+
+  .project--right .project__shot {
+    grid-column: 5 / -1;
+    grid-row: 1;
+  }
+
+  .project--right .project__text {
+    grid-column: 1 / span 4;
+    grid-row: 1;
+  }
+
+  .project__text h3 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: var(--step-lead);
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+  }
+
+  .project__text p {
+    margin-top: 12px;
+    max-width: 36ch;
+  }
+
+  .project__text .project__context {
+    margin-top: 6px;
+    font-size: var(--step-small);
+    color: var(--field-2-muted);
+  }
+
+  .project__text .project__result {
+    font-weight: 500;
+  }
+
+  .project__text dl {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 6px 16px;
+    margin-top: 24px;
+    font-size: var(--step-small);
+  }
+
+  .project__text dt {
+    color: var(--field-2-muted);
+  }
+
+  @media (max-width: 900px) {
+    .work__head {
+      grid-template-columns: 1fr;
+      row-gap: 40px;
+    }
+
+    .work__statement,
+    .work__photo {
+      grid-column: 1;
+    }
+
+    .project {
+      grid-template-columns: 1fr;
+    }
+
+    .project .project__shot,
+    .project .project__text {
+      grid-column: 1;
+      grid-row: auto;
+    }
+
+    .projects {
+      gap: 96px;
+      margin-top: 72px;
+    }
+  }
+</style>

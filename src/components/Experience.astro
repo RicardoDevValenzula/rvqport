@@ -1,0 +1,118 @@
+---
+import { experience } from '../data/experience';
+---
+
+<section id="experience" class="xp" aria-labelledby="experience-title">
+  <h2 id="experience-title" class="xp__title" data-reveal>Experience</h2>
+  {
+    experience.map((group) => (
+      <div class="xp__group">
+        <h3 class="xp__part">{group.part}</h3>
+        <table>
+          <thead class="visually-hidden">
+            <tr>
+              <th scope="col">Role</th>
+              <th scope="col">Company</th>
+              <th scope="col">Where</th>
+              <th scope="col">Dates</th>
+            </tr>
+          </thead>
+          <tbody>
+            {group.rows.map((row, i) => (
+              <tr data-reveal style={`--i: ${i}`}>
+                <th scope="row">{row.title}</th>
+                <td translate="no">{row.org}</td>
+                <td class="xp__concern">{row.place}</td>
+                <td class="xp__side">{row.dates}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    ))
+  }
+</section>
+
+<style>
+  .xp {
+    padding: clamp(72px, 8vw, 120px) var(--edge) var(--section-gap);
+    background: var(--field-1);
+    color: var(--field-1-ink);
+    font-size: var(--step-lead);
+  }
+
+  .xp__title {
+    font: inherit;
+    font-weight: 500;
+  }
+
+  .xp__part {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    margin-top: 72px;
+    padding-block: 12px 8px;
+    background: var(--field-1);
+    font: inherit;
+    font-weight: 500;
+    color: var(--accent);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  tr {
+    display: grid;
+    grid-template-columns: 40% 30% 1fr auto;
+    line-height: 1.5;
+  }
+
+  th,
+  td {
+    font-weight: 400;
+    text-align: left;
+    padding: 0 16px 0 0;
+  }
+
+  .xp__concern {
+    color: var(--field-1-muted);
+  }
+
+  .xp__side {
+    padding-right: 0;
+    text-align: right;
+    color: var(--field-1-muted);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 900px) {
+    tr {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
+      padding-block: 9px;
+    }
+
+    th {
+      grid-column: 1 / -1;
+      font-size: var(--step-lead);
+    }
+
+    td {
+      font-size: var(--step-small);
+      color: var(--field-1-muted);
+    }
+
+  }
+
+  @media (max-width: 600px) {
+    tr {
+      grid-template-columns: minmax(0, 1fr) auto;
+    }
+
+    .xp__concern {
+      display: none;
+    }
+  }
+</style>

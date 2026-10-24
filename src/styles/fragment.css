@@ -1,0 +1,140 @@
+/* Interface fragments: each project's own screen, built in HTML.
+   Marked with data-ui, so they keep product conventions (borders, small labels). */
+[data-ui] {
+  --ui-bg: #1b0e17;
+  --ui-panel: #261521;
+  --ui-line: #3a2433;
+  --ui-ink: #ffffff;
+  --ui-muted: #b3a6af;
+  --ui-accent: #ff488b;
+  --ui-accent-text: #ff7aa9;
+  --ui-accent-ink: #0d060b;
+  --ui-ok: #7ee0a9;
+
+  display: grid;
+  width: 100%;
+  overflow: hidden;
+  background: var(--ui-bg);
+  color: var(--ui-ink);
+  font-family: var(--font-text);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+[data-ui] .ui-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--ui-line);
+}
+
+[data-ui] .ui-title {
+  font-weight: 500;
+  font-size: 14px;
+}
+
+[data-ui] .ui-muted {
+  color: var(--ui-muted);
+}
+
+[data-ui] .ui-pill {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--ui-line);
+  color: var(--ui-ink);
+  white-space: nowrap;
+}
+
+[data-ui] .ui-pill--ok {
+  background: color-mix(in srgb, var(--ui-ok) 22%, transparent);
+  color: var(--ui-ok);
+}
+
+[data-ui] .ui-pill--due {
+  background: color-mix(in srgb, var(--ui-accent) 22%, transparent);
+  color: var(--ui-accent-text);
+}
+
+[data-ui] .ui-button {
+  padding: 6px 12px;
+  background: var(--ui-accent);
+  color: var(--ui-accent-ink);
+  font-weight: 500;
+}
+
+[data-ui] table {
+  align-self: start;
+  width: 100%;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+
+[data-ui] th,
+[data-ui] td {
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--ui-line);
+  text-align: left;
+  white-space: nowrap;
+}
+
+[data-ui] th {
+  font-weight: 400;
+  color: var(--ui-muted);
+}
+
+[data-ui] .num {
+  text-align: right;
+}
+
+@media (max-width: 720px) {
+  [data-ui] .ui-hide-sm {
+    display: none;
+  }
+
+  [data-ui] th,
+  [data-ui] td {
+    padding: 8px 10px;
+    white-space: normal;
+  }
+}
+
+/* Terminal fragments: the developer's own screen */
+[data-ui].term {
+  align-content: start;
+  padding: 0 0 20px;
+  font-family: var(--font-code);
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+[data-ui].term .ui-bar {
+  font-family: var(--font-text);
+}
+
+[data-ui].term pre {
+  margin: 0;
+  padding: 16px 20px 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font: inherit;
+}
+
+[data-ui] .t-prompt {
+  color: var(--ui-accent-text);
+}
+
+[data-ui] .t-del {
+  color: #ff8f8f;
+}
+
+[data-ui] .t-add,
+[data-ui] .t-ok {
+  color: var(--ui-ok);
+}
+
+[data-ui] .t-dim {
+  color: var(--ui-muted);
+}
