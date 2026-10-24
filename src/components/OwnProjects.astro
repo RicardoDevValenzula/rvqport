@@ -1,0 +1,164 @@
+---
+import { ownProjects } from '../data/projects';
+---
+
+<section id="projects" class="own" aria-labelledby="projects-title">
+  <div class="own__head">
+    <h2 id="projects-title" data-reveal>Built on my own</h2>
+    <p data-reveal style="--i: 1">
+      Projects I designed, built and run myself, from the data model to the deploy.
+    </p>
+  </div>
+
+  <ol class="own__list" role="list">
+    {
+      ownProjects.map((project) => (
+        <li id={project.id} class="own__item">
+          <h3 data-reveal translate="no">{project.name}</h3>
+          <div class="own__text">
+            {project.years && (
+              <p class="own__years" data-reveal style="--i: 1">
+                {project.years}
+              </p>
+            )}
+            <p data-reveal style="--i: 1">{project.summary}</p>
+            <p class="own__stack" data-reveal style="--i: 2">{project.stack}</p>
+            {(project.code || project.live) && (
+              <p class="own__links" data-reveal style="--i: 3">
+                {project.code && (
+                  <a class="link" href={project.code} rel="noopener">
+                    Code on GitHub <span aria-hidden="true">→</span>
+                  </a>
+                )}
+                {project.live && (
+                  <a class="link" href={project.live} rel="noopener">
+                    Live site <span aria-hidden="true">→</span>
+                  </a>
+                )}
+              </p>
+            )}
+          </div>
+        </li>
+      ))
+    }
+  </ol>
+</section>
+
+<style>
+  .own {
+    padding: clamp(72px, 8vw, 120px) var(--edge);
+    background: var(--bg);
+    color: var(--ink);
+  }
+
+  .own__head,
+  .own__item {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--gutter);
+  }
+
+  .own__head {
+    align-items: end;
+  }
+
+  .own__head h2 {
+    grid-column: 1 / span 7;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: var(--step-head);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+  }
+
+  .own__head p {
+    grid-column: 8 / -1;
+    max-width: 36ch;
+    font-size: var(--step-lead);
+    line-height: 1.3;
+  }
+
+  .own__list {
+    display: grid;
+    gap: clamp(72px, 8vw, 120px);
+    margin-top: clamp(96px, 10vw, 160px);
+    padding: 0;
+    list-style: none;
+  }
+
+  .own__item {
+    align-items: start;
+  }
+
+  .own__item h3 {
+    grid-column: 1 / span 7;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: var(--step-head);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    color: var(--accent);
+    transition: color var(--t-hover) ease;
+  }
+
+  /* Pointing at one project quiets the others, the way the team list does */
+  @media (hover: hover) and (pointer: fine) {
+    .own__list:has(.own__item:hover) .own__item:not(:hover) h3 {
+      color: var(--muted);
+    }
+  }
+
+  .own__text {
+    grid-column: 8 / -1;
+    max-width: 40ch;
+  }
+
+  .own__text p + p {
+    margin-top: 12px;
+  }
+
+  .own__text .own__years,
+  .own__text .own__stack {
+    font-size: var(--step-small);
+    color: var(--muted);
+  }
+
+  .own__text .own__years {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .own__text .own__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 24px;
+    margin-top: 20px;
+  }
+
+  .own__links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
+    min-height: 44px;
+    font-weight: 500;
+  }
+
+  @media (max-width: 900px) {
+    .own__head,
+    .own__item {
+      grid-template-columns: 1fr;
+      row-gap: 24px;
+    }
+
+    .own__head h2,
+    .own__head p,
+    .own__item h3,
+    .own__text {
+      grid-column: 1;
+    }
+
+    .own__list {
+      gap: 120px;
+    }
+  }
+</style>
